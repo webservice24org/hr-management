@@ -1,11 +1,50 @@
 <div class="border-1 shadow-sm p-4 bg-white dark:bg-gray-800">
     <!-- Header -->
-    <div class="flex justify-between items-center mb-4">
-        <h3 class="text-md font-semibold text-gray-900 dark:text-gray-100">Sub Department List</h3>
-        <button wire:click="create" class="px-3 py-1 bg-green-800 text-white rounded-md hover:bg-green-900 shadow">
-            <i class="fa-solid fa-circle-plus"></i> Add Sub Department
-        </button>
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 space-y-2 md:space-y-0">
+    
+        <!-- Left: Title -->
+        <div>
+            <h3 class="text-md font-semibold text-gray-900 dark:text-gray-100">
+                Sub Department List
+            </h3>
+        </div>
+
+        <!-- Middle: Excel Upload (input + button inline) -->
+        <div class="flex items-center gap-2">
+            <input type="file" wire:model="excelFile" class="border p-1 rounded" />
+
+            <button wire:click="importExcel"
+                    wire:loading.attr="disabled"
+                    wire:target="excelFile"
+                    class="hover:cursor-pointer px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 shadow flex items-center gap-2 transition">
+                <span wire:loading.remove wire:target="excelFile">Import Excel</span>
+
+                <span wire:loading wire:target="excelFile">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                    </svg>
+                </span>
+            </button>
+            <a href="{{ route('subdepartments.template') }}" 
+            class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 shadow flex items-center gap-2">
+                <i class="fa-solid fa-download"></i>
+                <span>Download Excel Template</span>
+            </a>
+
+        </div>
+
+        <!-- Right: Add Sub Department -->
+        <div>
+            <button wire:click="create"
+                    class="px-3 py-1 bg-green-800 text-white rounded-md hover:bg-green-900 hover:cursor-pointer shadow transition flex items-center gap-1">
+                <i class="fa-solid fa-circle-plus"></i>
+                <span>Add Sub Department</span>
+            </button>
+        </div>
+
     </div>
+
 
     <!-- Datatable -->
      <div class="data_table_wrapper">

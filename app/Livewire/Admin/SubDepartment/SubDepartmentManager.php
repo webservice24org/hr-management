@@ -10,16 +10,21 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Traits\HasDeleteConfirmation;
+use App\Imports\SubDepartmentsImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Livewire\WithFileUploads;
 
 class SubDepartmentManager extends Component
 {
-    use WithPagination, HasDeleteConfirmation;
+    use WithPagination, HasDeleteConfirmation, WithFileUploads;
 
     public $sub_departmentId;
     public $department_id;
     public $sub_department_name;
     public $status = 'active';
     public $showModal = false;
+
+    public $excelFile;
 
     protected $rules = [
         'department_id' => 'required|exists:departments,id',
@@ -102,4 +107,28 @@ class SubDepartmentManager extends Component
             'departments' => $departments,
         ]);
     }
+
+    public function importExcel()
+    {
+        if (!$this->excelFile) {
+            $this->dispatch('toastMagic', status: 'error', title: 'No File', message: 'Please select an Excel file.');
+            return;
+        }
+
+        $import = new SubDepartmentsImport;
+        Excel::import($import, $this->excelFile);
+
+        $this->dispatch('toastMagic', 
+            status: 'success', 
+            title: 'Import Completed', 
+            message: "Inserted: {$import->inserted}, Skipped: {$import->skipped}"
+        );
+
+        $this->excelFile = null;
+
+        // Optionally refresh datatable
+        $this->dispatch('sub-departments-updated');
+    }
+
+
 }

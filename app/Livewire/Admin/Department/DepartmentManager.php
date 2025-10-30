@@ -11,6 +11,7 @@ use App\Traits\HasDeleteConfirmation;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DepartmentsImport;
+use App\Exports\DepartmentTemplateExport;
 
 use Livewire\Attributes\On;
 
@@ -133,7 +134,10 @@ class DepartmentManager extends Component
         $this->dispatch('departments-updated');
     }
 
-
+    public function downloadTemplate()
+    {
+        return Excel::download(new DepartmentTemplateExport, 'department-template.xlsx');
+    }
     
 }
 

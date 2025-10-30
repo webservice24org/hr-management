@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Livewire\Attributes\On;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SubDepartmentsExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SubDepartmentTable extends DataTableComponent
 {
@@ -85,5 +88,44 @@ class SubDepartmentTable extends DataTableComponent
                 ->html(),
         ];
     }
+
+   public function exportSelected()
+    {
+        $selected = $this->getSelected();
+
+        if (empty($selected)) {
+            $this->dispatch('toastMagic', status: 'error', title: 'No selection', message: 'Please select at least one record.');
+            return;
+        }
+
+        return Excel::download(new SubDepartmentsExport($selected), 'sub_departments.xlsx');
+    }
+
+    public function pdfSelected()
+    {
+        $selected = $this->getSelected();
+
+        if (empty($selected)) {
+            $this->dispatch('toastMagic', status: 'error', title: 'No selection', message: 'Please select at least one record.');
+            return;
+        }
+
+        $subDepartments = \App\Models\SubDepartment::query()
+            ->with([
+                'department:id,department_name',
+                'creator:id,name',
+                'updater:id,name'
+            ])
+            ->whereIn('id', $selected)
+            ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.sub-departments-pdf', [
+            'subDepartments' => $subDepartments
+        ]);
+
+        return response()->streamDownload(fn() => print($pdf->output()), 'sub_departments.pdf');
+    }
+
+
 
 }

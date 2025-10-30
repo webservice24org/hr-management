@@ -28,6 +28,11 @@
                         </svg>
                     </span>
                 </button>
+                <button wire:click="downloadTemplate"
+                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 hover:cursor-pointer shadow flex items-center gap-1">
+                <i class="fa-solid fa-file-excel"></i> Download Example Template
+            </button>
+
             </div>
 
             <!-- Right: Add Department -->

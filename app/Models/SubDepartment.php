@@ -43,6 +43,10 @@ class SubDepartment extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+
+
+
+
     // Accessor: returns "Active" or "Inactive"
     protected function statusText(): Attribute
     {

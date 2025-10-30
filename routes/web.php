@@ -8,6 +8,10 @@ use App\Livewire\Admin\Users\PermissionManager;
 use App\Livewire\Admin\Users\RoleManager;
 use App\Livewire\Admin\Department\DepartmentManager;
 use App\Livewire\Admin\SubDepartment\SubDepartmentManager;
+use App\Exports\SubDepartmentsTemplateExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DepartmentTemplateExport;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,6 +40,9 @@ Route::middleware(['auth'])->group(function () {
         ->name('two-factor.show');
 });
 
+Route::get('/sub-departments/template', function () {
+    return Excel::download(new SubDepartmentsTemplateExport, 'sub_departments_template.xlsx');
+})->name('subdepartments.template');
 
 Route::middleware(['auth'])->prefix('admin/')->name('admin.')->group(function () {
     Route::get('users', UserList::class)->name('users.index');

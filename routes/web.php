@@ -11,6 +11,7 @@ use App\Livewire\Admin\SubDepartment\SubDepartmentManager;
 use App\Exports\SubDepartmentsTemplateExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DepartmentTemplateExport;
+use App\Livewire\Admin\Employee\PositionManager;
 
 
 Route::get('/', function () {
@@ -50,5 +51,6 @@ Route::middleware(['auth'])->prefix('admin/')->name('admin.')->group(function ()
     Route::get('users/permissions', PermissionManager::class)->name('permissions.index');
     Route::get('departments', DepartmentManager::class)->name('departments.index');
     Route::get('sub-departments', SubDepartmentManager::class)->name('subdepartments.index');
+    Route::get('positions', PositionManager::class)->name('positions.index');
 
 });

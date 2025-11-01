@@ -11,6 +11,10 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 use Livewire\Attributes\On;
+use App\Exports\PositionTemplateExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\PositionsImport;
+
 
 class PositionManager extends Component
 {
@@ -57,7 +61,7 @@ class PositionManager extends Component
         $this->showModal = true;
     }
 
-#[On('confirm-position-delete')]
+    #[On('confirm-position-delete')]
     public function handlePositiontDelete(int $id)
     {
         $this->confirmDelete($id);
@@ -119,4 +123,40 @@ class PositionManager extends Component
         $this->showModal = false;
         $this->reset(['positionId', 'position_name', 'position_details', 'status']);
     }
+
+
+
+    public function downloadTemplate()
+    {
+        return Excel::download(new PositionTemplateExport, 'position-template.xlsx');
+    }
+
+    public function importExcel()
+    {
+        $this->validate([
+            'excelFile' => 'required|file|mimes:xlsx,csv',
+        ]);
+
+        $import = new PositionsImport;
+        Excel::import($import, $this->excelFile->store('temp'));
+
+        $this->excelFile = null;
+
+        $this->dispatch('toastMagic',
+            status: 'success',
+            title: 'Import Completed',
+            message: "{$import->imported} positions imported, {$import->skipped} skipped.",
+            options: [
+                'showCloseBtn' => true,
+                'timeout' => 4000,
+            ]
+        );
+
+        $this->dispatch('position-updated');
+    }
+
+    
+
+
+
 }

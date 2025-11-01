@@ -11,10 +11,11 @@
         <div class="flex items-center gap-2">
             <input type="file" wire:model="excelFile" class="border p-1 rounded" />
 
-            <button wire:click="importExcel"
-                    wire:loading.attr="disabled"
-                    wire:target="excelFile"
-                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 shadow flex items-center gap-2 transition">
+            <button 
+                wire:click="importExcel" 
+                wire:loading.attr="disabled" 
+                wire:target="excelFile"
+                class="px-2 py-1 bg-green-800 text-white rounded hover:bg-green-900 shadow flex items-center gap-1 transition">
                 <span wire:loading.remove wire:target="excelFile">Import Excel</span>
                 <span wire:loading wire:target="excelFile">
                     <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -23,10 +24,12 @@
                     </svg>
                 </span>
             </button>
-
-            <button wire:click="downloadTemplate" class="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-700 shadow">
-                Download Template
+            <button 
+                wire:click="downloadTemplate" 
+                class="px-2 py-1 bg-blue-700 hover:bg-blue-800 hover:cursor-pointer text-white rounded shadow">
+                <i class="fa-solid fa-file-excel"></i> Download Template
             </button>
+
         </div>
 
         <!-- Right: Add Position -->

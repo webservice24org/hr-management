@@ -13,6 +13,7 @@ use App\Exports\PositionsExport;
 use App\Exports\PositionsPdfExport;
 use Livewire\Attributes\On;
 
+
 class PositionTable extends DataTableComponent
 {
     protected $model = Position::class;
@@ -22,7 +23,6 @@ class PositionTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setBulkActions([
             'exportSelected' => 'Export to Excel',
-            'pdfSelected' => 'Export to PDF',
         ]);
     }
 
@@ -77,32 +77,18 @@ class PositionTable extends DataTableComponent
         ];
     }
 
-    // Bulk Excel Export
+
+
     public function exportSelected()
     {
         $selected = $this->getSelected();
-        if ($selected) {
-            return Excel::download(new PositionsExport($selected), 'positions.xlsx');
+
+        if (empty($selected)) {
+            $this->dispatch('toastMagic', status: 'error', title: 'No selection', message: 'Please select at least one record.');
+            return;
         }
+
+        return Excel::download(new PositionsExport($selected), 'positions.xlsx');
     }
 
-    // Bulk PDF Export
-    public function pdfSelected()
-    {
-        $selected = $this->getSelected();
-        if ($selected) {
-            $positions = Position::whereIn('id', $selected)
-                ->leftJoin('users as creators', 'positions.created_by', '=', 'creators.id')
-                ->leftJoin('users as updaters', 'positions.updated_by', '=', 'updaters.id')
-                ->select(
-                    'positions.*',
-                    'creators.name as creator_name',
-                    'updaters.name as updater_name'
-                )
-                ->get();
-
-            $pdf = Pdf::loadView('exports.positions-pdf', ['positions' => $positions]);
-            return response()->streamDownload(fn() => print($pdf->output()), 'positions.pdf');
-        }
-    }
 }

@@ -102,13 +102,50 @@
                             >
                                 <i class="fa-solid fa-building-user mr-2 text-gray-500 dark:text-gray-300"></i>
                                 {{ __('Sub Department') }}
+                            </flux:navlist.item> 
+
+                        </flux:navlist.group>
+                    </div>
+                </div>
+            </flux:navlist>
+
+            <flux:navlist variant="outline">
+                <div x-data="{ open: {{ request()->routeIs('admin.positions.*') || request()->routeIs('admin.candidate.*')  ? 'true' : 'false' }} }">
+                    <button @click="open = !open"
+                            class="hover:cursor-pointer flex items-center justify-between w-full px-3 py-2 text-left font-medium text-black dark:text-yellow-100 hover:bg-gray-100 hover:text-black rounded">
+                        <span><i class="fa-solid fa-users-gear"></i></span><span>Employee Settings</span>
+                        <svg x-show="!open" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <svg x-show="open" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                        </svg>
+                    </button>
+
+                    <div x-show="open" x-transition x-cloak>
+                        <flux:navlist.group class="pl-4 mt-1">
+                            <!-- Users -->
+                            <flux:navlist.item
+                                :href="route('admin.positions.index')"
+                                :current="request()->routeIs('admin.positions.*')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-up-down-left-right mr-2 text-gray-500 dark:text-gray-300"></i>
+                                {{ __('Position') }}
                             </flux:navlist.item>
 
+                           <flux:navlist.item
+                                :href="route('admin.candidate.form')"
+                                :current="request()->routeIs('admin.candidate.*')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-up-down-left-right mr-2 text-gray-500 dark:text-gray-300"></i>
+                                {{ __('Candidate Form') }}
+                            </flux:navlist.item>
 
-                          
-
-
-                            
+                           
 
                         </flux:navlist.group>
                     </div>

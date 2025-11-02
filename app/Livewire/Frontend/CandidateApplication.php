@@ -10,6 +10,9 @@ use App\Models\CandidateWorkExperience;
 use App\Models\Position;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\CandidateApplicationSubmitted;
+use Illuminate\Support\Facades\Mail;
+
 
 class CandidateApplication extends Component
 {
@@ -160,7 +163,7 @@ class CandidateApplication extends Component
 
         session()->flash('success', 'Your application has been submitted successfully!');
         $this->resetExcept('positions');
-        //return redirect()->route('frontend.candidate.apply');
+        Mail::to($candidate->email)->send(new CandidateApplicationSubmitted($candidate));
         return redirect()->route('candidate.success', ['id' => $candidate->id]);
     }
 }

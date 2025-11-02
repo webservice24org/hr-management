@@ -4,7 +4,7 @@ namespace App\Livewire\Frontend;
 
 use Livewire\Component;
 use App\Models\CandidateInformation;
-use Barryvdh\DomPDF\Facade\Pdf; // assuming you have barryvdh/laravel-dompdf installed
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CandidateSuccess extends Component
 {
@@ -12,19 +12,26 @@ class CandidateSuccess extends Component
 
     public function mount($id)
     {
-        $this->candidate = CandidateInformation::with(['educations', 'experiences'])
+        // Load candidate + relationships
+        $this->candidate = CandidateInformation::with(['position', 'educations', 'experiences'])
             ->findOrFail($id);
     }
 
     public function downloadPdf()
     {
-        $pdf = Pdf::loadView('pdf.candidate-application', [
-            'candidate' => $this->candidate
-        ]);
+        try {
+            $pdf = Pdf::loadView('pdf.candidate-application', [
+                'candidate' => $this->candidate
+            ])->setPaper('a4');
 
-        return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->output();
-        }, 'Candidate_Application_' . $this->candidate->candidate_apply_id . '.pdf');
+            return response()->streamDownload(
+                fn() => print($pdf->output()),
+                'Candidate_Application_' . $this->candidate->candidate_apply_id . '.pdf'
+            );
+        } catch (\Exception $e) {
+            session()->flash('error', 'Unable to generate PDF: ' . $e->getMessage());
+            return back();
+        }
     }
 
     public function render()

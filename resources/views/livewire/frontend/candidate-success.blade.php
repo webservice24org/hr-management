@@ -1,25 +1,30 @@
 <div class="text-center py-10">
-    <div class="bg-green-100 border border-green-300 rounded-lg p-6 max-w-lg mx-auto">
+    <div class="bg-green-50 border border-green-200 rounded-md p-8 max-w-2xl mx-auto shadow">
         <i class="fa-solid fa-circle-check text-green-700 text-5xl mb-4"></i>
-        <h2 class="text-2xl font-bold text-green-800 mb-2">Application Submitted Successfully!</h2>
+        <h1 class="text-2xl font-semibold text-green-800 mb-2">Application Submitted Successfully!</h1>
+
+        <p class="text-gray-700 mb-2">
+            Thank you <strong>{{ $candidate->first_name }} {{ $candidate->last_name }}</strong> for applying.
+        </p>
         <p class="text-gray-700 mb-4">
-            Thank you, {{ $candidate->first_name }}! Your application has been received.
+            <strong>Application ID:</strong> {{ $candidate->candidate_apply_id }}<br>
+            <strong>Position:</strong> {{ $candidate->position->position_name ?? '-' }}
         </p>
 
-        <div class="bg-white rounded-lg shadow-md p-4 mb-4">
-            <p><strong>Application ID:</strong> {{ $candidate->candidate_apply_id }}</p>
-            <p><strong>Position:</strong> {{ optional($candidate->position)->position_name }}</p>
-            <p><strong>Email:</strong> {{ $candidate->email }}</p>
-        </div>
-
-        <button
-            wire:click="downloadPdf"
-            class="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded shadow-md">
-            <i class="fa-solid fa-file-pdf mr-2"></i> Download Application PDF
+        <button wire:click="downloadPdf"
+            class="bg-green-700 hover:bg-green-800 hover:cursor-pointer text-white px-5 py-2 rounded shadow transition">
+            <i class="fa-solid fa-file-pdf"></i> Download Application (PDF)
         </button>
 
         <div class="mt-6">
-            <a href="/" class="text-blue-700 underline">← Back to Home</a>
+            <a href="{{ route('frontend.candidate.apply') }}"
+               class="text-blue-700 hover:underline text-sm">
+               ← Apply for another position
+            </a>
         </div>
     </div>
+
+    @if (session()->has('error'))
+        <div class="mt-4 text-red-600">{{ session('error') }}</div>
+    @endif
 </div>

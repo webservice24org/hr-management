@@ -110,7 +110,7 @@
             </flux:navlist>
 
             <flux:navlist variant="outline">
-                <div x-data="{ open: {{ request()->routeIs('admin.positions.*') || request()->routeIs('admin.candidate.*')  ? 'true' : 'false' }} }">
+                <div x-data="{ open: {{ request()->routeIs('admin.positions.*') || request()->routeIs('admin.candidate.*') || request()->routeIs('admin.candidates.*') || request()->routeIs('admin.shortlists.*') ? 'true' : 'false' }} }">
                     <button @click="open = !open"
                             class="hover:cursor-pointer flex items-center justify-between w-full px-3 py-2 text-left font-medium text-black dark:text-yellow-100 hover:bg-gray-100 hover:text-black rounded">
                         <span><i class="fa-solid fa-users-gear"></i></span><span>Employee Settings</span>
@@ -141,10 +141,27 @@
                                 :current="request()->routeIs('admin.candidate.*')"
                                 wire:navigate
                             >
-                                <i class="fa-solid fa-up-down-left-right mr-2 text-gray-500 dark:text-gray-300"></i>
-                                {{ __('Candidate Form') }}
+                                <i class="fa-solid fa-person-arrow-up-from-line mr-2 text-gray-500 dark:text-gray-300"></i>
+                                {{ __('Create Candidate') }}
                             </flux:navlist.item>
 
+                           <flux:navlist.item
+                                :href="route('admin.candidates.index')"
+                                :current="request()->routeIs('admin.candidates.*')"
+                                wire:navigate
+                            >
+                                <i class="fa-classic fa-solid fa-list-ul mr-2 text-gray-500 dark:text-gray-300"></i>
+                                {{ __('Candidate List') }}
+                            </flux:navlist.item>
+                            
+                            <flux:navlist.item
+                                :href="route('admin.shortlists.view')"
+                                :current="request()->routeIs('admin.shortlists.*')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-list-check mr-2 text-gray-500 dark:text-gray-300"></i>
+                                {{ __('Shortlisted Candidates') }}
+                            </flux:navlist.item>
                            
 
                         </flux:navlist.group>

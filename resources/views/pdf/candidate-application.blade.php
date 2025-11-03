@@ -51,10 +51,10 @@
             color: #003366;
             text-align: left;
             font-weight: bold;
-            border-bottom: 1px solid #ccc;
+            border: 1px solid #ccc;
         }
         td {
-            border-bottom: 1px solid #e5e7eb;
+            border: 1px solid #e5e7eb;
         }
         .photo {
             text-align: right;

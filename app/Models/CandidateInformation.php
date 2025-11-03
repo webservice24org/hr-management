@@ -85,4 +85,5 @@ class CandidateInformation extends Model
     }
 
 
+
 }

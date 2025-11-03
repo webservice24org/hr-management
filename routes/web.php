@@ -13,6 +13,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DepartmentTemplateExport;
 use App\Livewire\Admin\Employee\PositionManager;
 use App\Livewire\Admin\Recruitment\CandidateForm;
+use App\Livewire\Admin\Recruitment\CandidateManager;
+use App\Livewire\Admin\Recruitment\CandidateView;
+use App\Livewire\Admin\Recruitment\CandidateShortlist;
 
 use App\Livewire\Frontend\CandidateApplication;
 use App\Livewire\Frontend\HomePage;
@@ -60,11 +63,15 @@ Route::middleware(['auth'])->prefix('admin/')->name('admin.')->group(function ()
     Route::get('sub-departments', SubDepartmentManager::class)->name('subdepartments.index');
     Route::get('positions', PositionManager::class)->name('positions.index');
     Route::get('candidate-form', CandidateForm::class)->name('candidate.form');
+    Route::get('candidates', CandidateManager::class)->name('candidates.index');
+    Route::get('candidates/{id}/view', CandidateView::class)->name('candidates.view');
+    Route::get('candidates/shortlist', CandidateShortlist::class)->name('shortlists.view');
+
 
 });
 
 
-Route::get('/', HomePage::class)->name('frontend.home');
+Route::get('/', HomePage::class)->name('home');
 Route::get('/apply', CandidateApplication::class)->name('frontend.candidate.apply');
 
 

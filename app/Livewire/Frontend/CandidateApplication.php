@@ -164,6 +164,7 @@ class CandidateApplication extends Component
         session()->flash('success', 'Your application has been submitted successfully!');
         $this->resetExcept('positions');
         Mail::to($candidate->email)->send(new CandidateApplicationSubmitted($candidate));
+        //Mail::to($candidate->email)->queue(new CandidateApplicationSubmitted($candidate));
         return redirect()->route('candidate.success', ['id' => $candidate->id]);
     }
 }

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Mail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\CandidateShortlistedMail; // we’ll create this next
 use App\Mail\CandidateRejectionMail;
+use Illuminate\Support\Facades\DB;
+
 
 class CandidateView extends Component
 {
@@ -47,7 +49,7 @@ class CandidateView extends Component
     public function openShortlistModal()
     {
         $this->interview_date = null;
-        $this->showShortlistModal = true;
+        $this->showShortlistModal = true; 
     }
 
     public function saveShortlist()
@@ -59,15 +61,16 @@ class CandidateView extends Component
         $exists = \App\Models\CandidateShortlist::where('candidate_apply_id', $this->candidate->candidate_apply_id)->exists();
 
         if ($exists) {
-            $this->dispatch('toastMagic',
-                status: 'warning',
+            $this->dispatch('toastMagic', 
+                status:  'warning',
                 title: 'Already Shortlisted',
-                message: 'This application ID is already shortlisted.',
-                options: ['showCloseBtn' => true]
+                message:  'This application ID is already shortlisted.',
+                options:  ['showCloseBtn' => true],
             );
             return;
         }
 
+        // ✅ Create shortlist
         $shortlist = \App\Models\CandidateShortlist::create([
             'candidate_id' => $this->candidate->id,
             'candidate_apply_id' => $this->candidate->candidate_apply_id,
@@ -75,24 +78,33 @@ class CandidateView extends Component
             'listed_by' => Auth::id(),
         ]);
 
+        // ✅ Update CandidateInformation status
+        $this->candidate->update([
+            'status' => 'Short Listed',
+        ]);
+
+        // ✅ Send email (optional)
         try {
             Mail::to($this->candidate->email)->send(new CandidateShortlistedMail($this->candidate, $shortlist));
         } catch (\Exception $e) {
             session()->flash('error', 'Shortlisted but email failed to send: ' . $e->getMessage());
         }
 
+        // ✅ Toast success
         $this->dispatch('toastMagic',
-            status: 'success',
-            title: 'Candidate Shortlisted',
-            message: 'Candidate shortlisted successfully with interview date.',
-            options: ['showCloseBtn' => true]
-        );
+                status: 'success',
+                title: 'Candidate Shortlisted',
+                message: 'Candidate shortlisted successfully with interview date.',
+                options: ['showCloseBtn' => true]
+            );
 
+        // ✅ Refresh DataTable and UI
         $this->dispatch('shortlist-saved');
 
         $this->showShortlistModal = false;
         $this->reset('interview_date');
     }
+
 
 
 
@@ -109,26 +121,47 @@ class CandidateView extends Component
             'candidate.id' => 'required'
         ]);
 
-        try {
-            Mail::to($this->candidate->email)
-                ->send(new CandidateRejectionMail($this->candidate));
+        DB::beginTransaction();
 
-            // Toast notification
-            
-            $this->dispatch('toastMagic',
-                status: 'error',
-                title: 'Candidate Rejected',
-                message: 'Rejection email sent successfully.',
-                options: ['showCloseBtn' => true]
+        try {
+            // ✅ Update candidate status
+            $this->candidate->update([
+                'status' => 'Rejected',
+            ]);
+
+            DB::commit();
+
+            // ✅ Send rejection email after DB commit
+            try {
+                Mail::to($this->candidate->email)
+                    ->send(new CandidateRejectionMail($this->candidate));
+            } catch (\Exception $e) {
+                session()->flash('error', 'Candidate rejected, but email failed: ' . $e->getMessage());
+            }
+
+            // ✅ Toast success message
+            $this->dispatch('toastMagic', 
+                status:  'error',
+                title:  'Candidate Rejected',
+                message:  'Candidate rejected and status updated successfully.',
+                options: ['showCloseBtn' => true],
             );
 
-            // Close modal after success
             $this->showRejectModal = false;
 
         } catch (\Exception $e) {
-            session()->flash('error', 'Failed to send rejection email: ' . $e->getMessage());
+            DB::rollBack();
+
+            // ❌ Toast error if failed
+            $this->dispatch('toastMagic', 
+                status:  'error',
+                title:  'Error',
+                message:  'Failed to reject candidate: ' . $e->getMessage(),
+                options: ['showCloseBtn' => true],
+            );
         }
     }
+
 
 
     public function render()

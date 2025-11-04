@@ -138,6 +138,7 @@ class CandidateApplication extends Component
             'division' => $this->division,
             'city' => $this->city,
             'post_code' => $this->post_code,
+            'status' => 'Pending',
             'picture' => $picturePath,
         ]);
 

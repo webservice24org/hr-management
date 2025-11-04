@@ -32,6 +32,7 @@ class CandidateForm extends Component
     public $city;
     public $post_code;
     public $picture;
+    public $status;
 
     // Dynamic education and experience arrays
     public $educations = [];
@@ -136,7 +137,6 @@ class CandidateForm extends Component
 
         $candidate = CandidateInformation::create([
             'candidate_apply_id' => rand(0, 20),
-            //'uuid' => Str::uuid(),
             'position_id' => $this->position_id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
@@ -148,16 +148,18 @@ class CandidateForm extends Component
             'division' => $this->division,
             'city' => $this->city,
             'post_code' => $this->post_code,
-            'status' => 'active',
+            // ✅ Default to "Pending"
+            'status' => 'Pending',
             'created_by' => Auth::id(),
         ]);
 
+        // ✅ Store picture if uploaded
         if ($this->picture) {
             $path = $this->picture->store('candidate_pictures', 'public');
             $candidate->update(['picture' => $path]);
         }
 
-        // Save Education Info
+        // ✅ Save Education Info
         foreach ($this->educations as $edu) {
             CandidateEducation::create([
                 'candidate_id' => $candidate->id,
@@ -168,7 +170,7 @@ class CandidateForm extends Component
             ]);
         }
 
-        // Save Experience Info
+        // ✅ Save Experience Info
         foreach ($this->experiences as $exp) {
             CandidateWorkExperience::create([
                 'candidate_id' => $candidate->id,
@@ -180,7 +182,14 @@ class CandidateForm extends Component
         }
 
         $this->resetExcept('step');
-        $this->dispatch('toastMagic', status: 'success', title: 'Candidate Saved', message: 'Candidate information saved successfully!');
+
+        $this->dispatch('toastMagic',
+            status: 'success',
+            title: 'Candidate Saved',
+            message: 'Candidate information saved successfully!',
+        );
+
         $this->step = 1;
     }
+
 }

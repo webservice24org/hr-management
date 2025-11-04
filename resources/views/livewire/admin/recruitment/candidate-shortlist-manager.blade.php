@@ -13,4 +13,7 @@
     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow data_table_wrapper">
         <livewire:candidate-short-list-table />
     </div>
+
+    
+       
 </div>

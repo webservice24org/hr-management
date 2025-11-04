@@ -49,7 +49,6 @@ class PositionTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")->sortable(),
-            Column::make("Uuid", "uuid")->sortable(),
             Column::make("Position name", "position_name")->sortable(),
             Column::make("Position details", "position_details")->sortable(),
             Column::make("Status", "status")
@@ -70,7 +69,6 @@ class PositionTable extends DataTableComponent
                           ->select('positions.*');
                 }),
             Column::make("Created at", "created_at")->sortable(),
-            Column::make("Updated at", "updated_at")->sortable(),
             Column::make('Actions', 'id')
                 ->label(fn($row) => view('livewire.admin.employee.position-actions', ['position' => $row]))
                 ->html(),

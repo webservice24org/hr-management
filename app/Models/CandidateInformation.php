@@ -29,6 +29,7 @@ class CandidateInformation extends Model
         'city',
         'post_code',
         'picture',
+        'status',
     ];
 
     protected $casts = [

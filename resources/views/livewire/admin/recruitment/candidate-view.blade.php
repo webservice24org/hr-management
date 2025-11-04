@@ -11,16 +11,30 @@
                 <i class="fa-solid fa-file-pdf"></i> Download Application (PDF)
             </button>
 
-            <!-- Shortlist -->
-            <button wire:click="openShortlistModal"
-                class="bg-blue-700 hover:bg-blue-800 hover:cursor-pointer text-white px-5 py-2 rounded shadow transition">
-                <i class="fa-solid fa-check"></i> Select to Shortlist
-            </button>
+            @if($candidate->status === 'Short Listed')
+                <p class="text-green-700 font-semibold text-lg">
+                    ✅ Candidate Shortlisted
+                </p>
+            @elseif($candidate->status === 'Rejected')
+                <p class="text-red-700 font-semibold text-lg">
+                    ❌ Candidate Rejected
+                </p>
+            @elseif($candidate->status === 'Final Selected')
+            <p class="text-green-700 font-semibold text-lg">
+                ✅ Final Selected
+            </p>
+            @else
+                <button wire:click="openShortlistModal"
+                    class="bg-blue-700 hover:bg-blue-800 hover:cursor-pointer text-white px-5 py-2 rounded shadow transition">
+                    <i class="fa-solid fa-check"></i> Select to Shortlist
+                </button>
 
-            <!-- Reject -->
-            <button wire:click="openRejectModal" class="bg-red-700 hover:bg-red-800 hover:cursor-pointer text-white px-5 py-2 rounded shadow">
-                <i class="fa-solid fa-xmark"></i> Reject Candidate
-            </button>
+                <button wire:click="openRejectModal"
+                    class="bg-red-700 hover:bg-red-800 hover:cursor-pointer text-white px-5 py-2 rounded shadow">
+                    <i class="fa-solid fa-xmark"></i> Reject Candidate
+                </button>
+            @endif
+
 
 
             <!-- Back -->
@@ -222,9 +236,9 @@
         class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         
         <div x-show="open" x-transition.scale class="bg-white rounded shadow-lg w-96 p-5">
-            <h2 class="text-lg font-semibold mb-3">Reject Candidate</h2>
-            <p>Are you sure you want to reject <strong>{{ $candidate->first_name }} {{ $candidate->last_name }}</strong>?</p>
-            <p class="text-sm text-gray-500 mt-1">An email will be sent to notify the candidate politely.</p>
+            <h2 class="text-lg font-semibold mb-3 text-black">Reject Candidate</h2>
+            <p class="text-black">Are you sure you want to reject <strong>{{ $candidate->first_name }} {{ $candidate->last_name }}</strong>?</p>
+            <p class="text-sm text-black mt-1 ">An email will be sent to notify the candidate politely.</p>
 
             <div class="mt-4 flex justify-end gap-2">
                 <button @click="open=false" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>

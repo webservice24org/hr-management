@@ -48,7 +48,6 @@ class SubDepartmentTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")->sortable(),
-            Column::make("Uuid", "uuid")->sortable(),
             
             Column::make("Department", "department_id")
                 ->label(fn($row) => $row->department_name ?? '-')
@@ -79,9 +78,6 @@ class SubDepartmentTable extends DataTableComponent
                           ->orderBy('updaters.name', $direction)
                           ->select('sub_departments.*');
                 }),
-
-            Column::make("Created at", "created_at")->sortable(),
-            Column::make("Updated at", "updated_at")->sortable(),
 
             Column::make('Actions', 'id')
                 ->label(fn($row) => view('livewire.admin.sub-department.sub-department-actions', ['subDepartment' => $row]))

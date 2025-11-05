@@ -22,19 +22,27 @@ class CandidateManager extends Component
     }
 
     protected function performDelete(int $id)
-    {
-        $candidate = CandidateInformation::findOrFail($id);
-        $candidate->delete();
+{
+    $candidate = CandidateInformation::findOrFail($id);
 
-        $this->dispatch('toastMagic',
-            status: 'error',
-            title: 'Candidate Deleted',
-            message: 'Candidate deleted successfully.',
-            options: ['showCloseBtn' => true]
-        );
-
-        $this->dispatch('candidate-updated'); // Tell datatable to refresh
+    // Delete picture from storage if it exists
+    if ($candidate->picture && \Storage::disk('public')->exists($candidate->picture)) {
+        \Storage::disk('public')->delete($candidate->picture);
     }
+
+    // Delete the candidate record
+    $candidate->delete();
+
+    $this->dispatch('toastMagic',
+        status: 'error',
+        title: 'Candidate Deleted',
+        message: 'Candidate deleted successfully.',
+        options: ['showCloseBtn' => true]
+    );
+
+    $this->dispatch('candidate-updated'); // Tell datatable to refresh
+}
+
 
     
 

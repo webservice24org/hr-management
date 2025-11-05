@@ -52,7 +52,6 @@ class DepartmentsTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")->sortable(),
-            Column::make("Uuid", "uuid")->sortable(),
             Column::make("Department name", "department_name")->sortable(),
             Column::make('Status', 'status')
                 ->format(fn($value) => view('components.status-badge', ['status' => $value]))
@@ -76,7 +75,6 @@ class DepartmentsTable extends DataTableComponent
                 }),
 
             Column::make("Created at", "created_at")->sortable(),
-            Column::make("Updated at", "updated_at")->sortable(),
 
             Column::make('Actions', 'id')
                 ->label(fn($row) => view('livewire.admin.department.department-actions', ['department' => $row]))

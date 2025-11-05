@@ -17,6 +17,7 @@ use App\Livewire\Admin\Recruitment\CandidateManager;
 use App\Livewire\Admin\Recruitment\CandidateView;
 use App\Livewire\Admin\Recruitment\CandidateShortlistManager;
 use App\Livewire\Admin\Recruitment\CandidateInterviewManager;
+use App\Livewire\Admin\Office\OfficeBranches;
 
 use App\Livewire\Frontend\CandidateApplication;
 use App\Livewire\Frontend\HomePage;
@@ -68,6 +69,7 @@ Route::middleware(['auth'])->prefix('admin/')->name('admin.')->group(function ()
     Route::get('candidates/{id}/view', CandidateView::class)->name('candidates.view');
     Route::get('candidates/shortlist', CandidateShortlistManager::class)->name('shortlists.view');
     Route::get('candidate/interview/{candidateId}', CandidateInterviewManager::class)->name('interview.manage');
+    Route::get('office-branches', OfficeBranches::class)->name('office.branches');
 
 
 });

@@ -1,4 +1,4 @@
-<div class="p-6 space-y-6 shadow-sm p-4 bg-white dark:bg-gray-800">
+<div class="space-y-6 shadow-sm p-4 bg-white dark:bg-gray-800">
     <div class="flex justify-between items-center">
         <h2 class="text-xl font-semibold text-gray-800">Office Branch Management</h2>
         <button wire:click="openModal" class="bg-green-700 hover:bg-green-800 hover:cursor-pointer text-white px-4 py-2 rounded-lg">

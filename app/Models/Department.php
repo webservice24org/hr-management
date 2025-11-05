@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\SubDepartment;
+use App\Models\User;
+
 
 class Department extends Model
 {
@@ -40,6 +43,13 @@ class Department extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    // ✅ Add hasMany relationship for sub-departments
+   public function subDepartments()
+    {
+        return $this->hasMany(SubDepartment::class, 'department_id');
+    }
+
+
     // Accessor: returns "Active" or "Inactive"
     protected function statusText(): Attribute
     {
@@ -48,4 +58,5 @@ class Department extends Model
         );
     }
 }
+
 

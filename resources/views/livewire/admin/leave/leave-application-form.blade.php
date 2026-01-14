@@ -1,4 +1,4 @@
-<div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+<div class="max-w-7xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
 
     <h2 class="text-xl font-bold mb-6 text-gray-800 dark:text-white">
         Leave Application Form

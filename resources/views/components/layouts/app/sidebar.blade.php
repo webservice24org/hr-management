@@ -130,10 +130,111 @@
             </flux:navlist>
 
             <flux:navlist variant="outline">
+                <div
+                    x-data="{ open: {{ request()->routeIs(
+                        'admin.holidays*',
+                        'admin.weekly-holidays',
+                        'admin.leave-types',
+                        'admin.employee.leave.apply',
+                        'admin.leave.approval'
+                    ) ? 'true' : 'false' }} }"
+                >
+                    {{-- Parent --}}
+                    <button @click="open = !open"
+                        class="hover:cursor-pointer flex items-center justify-between w-full px-3 py-2
+                            text-left font-medium text-black dark:text-yellow-100
+                            hover:bg-gray-100 hover:text-black rounded">
+
+                        <span class="flex items-center">
+                            <i class="fa-solid fa-calendar-days mr-2"></i>
+                            Leave Manager
+                        </span>
+
+                        {{-- Toggle Icon --}}
+                        <svg x-show="!open" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <svg x-show="open" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                        </svg>
+                    </button>
+
+                    {{-- Children --}}
+                    <div x-show="open" x-transition x-cloak>
+                        <flux:navlist.group class="pl-4 mt-1 space-y-1">
+
+                            {{-- Holiday List --}}
+                            <flux:navlist.item
+                                :href="route('admin.holidays')"
+                                :current="request()->routeIs('admin.holidays')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-list mr-2 text-gray-500"></i>
+                                Holiday List
+                            </flux:navlist.item>
+
+                            <flux:navlist.item
+                                :href="route('admin.holidays.calendar')"
+                                :current="request()->routeIs('admin.holidays.calendar')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-calendar mr-2 text-gray-500"></i>
+                                Holiday Calendar
+                            </flux:navlist.item>
+
+                            {{-- Weekly Holidays --}}
+                            <flux:navlist.item
+                                :href="route('admin.weekly-holidays')"
+                                :current="request()->routeIs('admin.weekly-holidays')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-repeat mr-2 text-gray-500"></i>
+                                Weekly Holidays
+                            </flux:navlist.item>
+
+                            {{-- Leave Types --}}
+                            <flux:navlist.item
+                                :href="route('admin.leave-types')"
+                                :current="request()->routeIs('admin.leave-types')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-layer-group mr-2 text-gray-500"></i>
+                                Leave Types
+                            </flux:navlist.item>
+
+                            {{-- Apply Leave (Employee) --}}
+                            <flux:navlist.item
+                                :href="route('admin.employee.leave.apply')"
+                                :current="request()->routeIs('admin.employee.leave.apply')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-pen-to-square mr-2 text-gray-500"></i>
+                                Apply Leave
+                            </flux:navlist.item>
+
+                            {{-- Leave Approval (Admin / Manager) --}}
+                            <flux:navlist.item
+                                :href="route('admin.leave.approval')"
+                                :current="request()->routeIs('admin.leave.approval')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-user-check mr-2 text-gray-500"></i>
+                                Leave Approval
+                            </flux:navlist.item>
+
+                        </flux:navlist.group>
+                    </div>
+                </div>
+            </flux:navlist>
+
+
+            <flux:navlist variant="outline">
                 <div x-data="{ open: {{ request()->routeIs('admin.positions.*') || request()->routeIs('admin.departments.*') || request()->routeIs('admin.subdepartments.*') || request()->routeIs('admin.candidate.*') || request()->routeIs('admin.candidates.*') || request()->routeIs('admin.shortlists.*') ? 'true' : 'false' }} }">
                     <button @click="open = !open"
                             class="hover:cursor-pointer flex items-center justify-between w-full px-3 py-2 text-left font-medium text-black dark:text-yellow-100 hover:bg-gray-100 hover:text-black rounded">
-                        <span><i class="fa-solid fa-users-gear"></i></span><span>Recruitment</span>
+                        <span><i class="fa-solid fa-users-gear"></i></span><span>ManageRecruitment</span>
                         <svg x-show="!open" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />

@@ -28,6 +28,7 @@ use App\Livewire\Admin\Holiday\WeeklyHolidayManager;
 use App\Livewire\Admin\Leave\LeaveTypeManager;
 use App\Livewire\Admin\Leave\LeaveApplicationForm;
 use App\Livewire\Admin\Leave\LeaveApprovalPanel;
+use App\Livewire\Admin\Project\ClientManager;
 
 
 use App\Livewire\Frontend\CandidateApplication;
@@ -90,21 +91,30 @@ Route::middleware(['auth'])->prefix('admin/')->name('admin.')->group(function ()
 
 
     Route::get('employees', EmployeeManager::class)->name('employee.manager');
-    Route::get('holidays', HolidayManager::class)
-        ->name('admin.holidays');
 
-    // 🔹 Holiday Calendar View
+    Route::get('holidays', HolidayManager::class)
+        ->name('holidays');
+
     Route::get('holidays/calendar', HolidayCalendar::class)
-        ->name('admin.holidays.calendar');
-        
-        Route::get('weekly-holidays', WeeklyHolidayManager::class)
-    ->name('weekly-holidays');
+        ->name('holidays.calendar');
+
+    Route::get('weekly-holidays', WeeklyHolidayManager::class)
+        ->name('weekly-holidays');
 
     Route::get('leave-types', LeaveTypeManager::class)
-    ->name('admin.leave-types');
+        ->name('leave-types');
 
-    Route::get('employee/leave/apply',LeaveApplicationForm::class)->name('employee.leave.apply');
-    Route::get('leave-approval', LeaveApprovalPanel::class)->name('admin.leave.approval');;
+    Route::get('employee/leave/apply', LeaveApplicationForm::class)
+        ->name('employee.leave.apply');
+
+    Route::get('leave-approval', LeaveApprovalPanel::class)
+        ->name('leave.approval');
+
+        
+
+Route::get('clients', ClientManager::class)
+    ->name('admin.clients');
+
 
 
 });

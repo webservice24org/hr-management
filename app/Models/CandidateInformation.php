@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\Position;
 use App\Models\CandidateEducation;
 use App\Models\CandidateWorkExperience;
+use App\Models\CandidateInterview;
 
 class CandidateInformation extends Model
 {
@@ -76,6 +77,14 @@ class CandidateInformation extends Model
     {
         return $this->hasMany(CandidateWorkExperience::class, 'candidate_id');
     }
+
+    
+
+    public function interviews()
+    {
+        return $this->hasMany(CandidateInterview::class, 'candidate_id');
+    }
+
 
     /**
      * Helper for full name

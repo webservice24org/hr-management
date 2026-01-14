@@ -23,6 +23,8 @@ class EmployeeManager extends Component
         $this->resetPage();
     }
 
+    
+
     public function confirmDelete($id)
     {
         $this->confirmingDelete = true;

@@ -20,6 +20,15 @@ use App\Livewire\Admin\Recruitment\CandidateInterviewManager;
 use App\Livewire\Admin\Office\OfficeBranches;
 use App\Livewire\Admin\Employee\EmployeeForm;
 use App\Livewire\Admin\Employee\EmployeeManager;
+use App\Livewire\Admin\Employee\EmployeeViewManager;
+use App\Livewire\Admin\Employee\EmployeePerformanceForm;
+use App\Livewire\Admin\Holiday\HolidayManager;
+use App\Livewire\Admin\Holiday\HolidayCalendar;
+use App\Livewire\Admin\Holiday\WeeklyHolidayManager;
+use App\Livewire\Admin\Leave\LeaveTypeManager;
+use App\Livewire\Admin\Leave\LeaveApplicationForm;
+use App\Livewire\Admin\Leave\LeaveApprovalPanel;
+
 
 use App\Livewire\Frontend\CandidateApplication;
 use App\Livewire\Frontend\HomePage;
@@ -75,9 +84,27 @@ Route::middleware(['auth'])->prefix('admin/')->name('admin.')->group(function ()
     Route::get('employees/create', EmployeeForm::class)->name('employees.create');
 
     Route::get('employees/edit/{employee_id}', EmployeeForm::class)->name('employees.edit');
+    Route::get('employee/view/{employee_id}', EmployeeViewManager::class)->name('employee.view');
+
+    Route::get('employees/{employee_id}/performance', EmployeePerformanceForm::class)->name('employee.performance');
 
 
     Route::get('employees', EmployeeManager::class)->name('employee.manager');
+    Route::get('holidays', HolidayManager::class)
+        ->name('admin.holidays');
+
+    // 🔹 Holiday Calendar View
+    Route::get('holidays/calendar', HolidayCalendar::class)
+        ->name('admin.holidays.calendar');
+        
+        Route::get('weekly-holidays', WeeklyHolidayManager::class)
+    ->name('weekly-holidays');
+
+    Route::get('leave-types', LeaveTypeManager::class)
+    ->name('admin.leave-types');
+
+    Route::get('employee/leave/apply',LeaveApplicationForm::class)->name('employee.leave.apply');
+    Route::get('leave-approval', LeaveApprovalPanel::class)->name('admin.leave.approval');;
 
 
 });

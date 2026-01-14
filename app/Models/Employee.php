@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\CandidateInformation;
 use App\Models\EmployeeInformation;
 use App\Models\EmployeeSalary;
+use App\Models\EmployeePerformance;
 
 class Employee extends Model
 {
@@ -37,5 +38,11 @@ class Employee extends Model
     {
         return $this->hasOne(EmployeeSalary::class, 'employee_id');
     }
+
+    public function performances()
+    {
+        return $this->hasMany(EmployeePerformance::class);
+    }
+
 }
 

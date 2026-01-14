@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_active',
     ];
 
     /**
@@ -37,6 +38,11 @@ class User extends Authenticatable
         'two_factor_recovery_codes',
         'remember_token',
     ];
+
+    public function isAdmin()
+{
+    return $this->hasAnyRole(['Super Admin', 'Admin']);
+}
 
     /**
      * Get the attributes that should be cast.

@@ -3,7 +3,7 @@
         <h2 class="text-xl font-semibold text-gray-700 dark:text-white">Employee Manager</h2>
 
         <a href="{{ route('admin.employees.create') }}"
-           class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+           class="px-4 py-2 bg-green-800 text-white rounded-lg hover:bg-green-900">
             + Add Employee
         </a>
     </div>
@@ -56,15 +56,20 @@
                                     class="w-10 h-10 rounded-full object-cover mx-auto opacity-70">
                             @endif
                         </td>
+                        
 
                         <td class="border-1 px-4 py-2 text-center space-x-2">
                             <a href="{{ route('admin.employees.edit', $emp->id) }}"
                                class="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a href=""
-                               class="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs">
+                            <a href="{{ route('admin.employee.view', $emp->id) }}"
+                               class="px-2 py-1 bg-green-800 text-white rounded hover:bg-green-900 text-xs">
                                 <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a href="{{ route('admin.employee.performance', $emp->id) }}"
+                               class="px-2 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 text-xs">
+                                <i class="fas fa-chart-line"></i>
                             </a>
                             <button wire:click="confirmDelete({{ $emp->id }})"
                                     class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs">

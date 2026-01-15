@@ -29,6 +29,7 @@ use App\Livewire\Admin\Leave\LeaveTypeManager;
 use App\Livewire\Admin\Leave\LeaveApplicationForm;
 use App\Livewire\Admin\Leave\LeaveApprovalPanel;
 use App\Livewire\Admin\Project\ClientManager;
+use App\Livewire\Admin\Project\ProjectManager;
 
 
 use App\Livewire\Frontend\CandidateApplication;
@@ -112,8 +113,13 @@ Route::middleware(['auth'])->prefix('admin/')->name('admin.')->group(function ()
 
         
 
-Route::get('clients', ClientManager::class)
-    ->name('admin.clients');
+    // 🔹 Clients
+    Route::get('clients', ClientManager::class)
+        ->name('clients');
+
+    // 🔹 Projects
+    Route::get('projects', ProjectManager::class)
+        ->name('projects');
 
 
 

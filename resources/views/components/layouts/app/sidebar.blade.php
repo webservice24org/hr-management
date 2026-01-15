@@ -132,6 +132,65 @@
             <flux:navlist variant="outline">
                 <div
                     x-data="{ open: {{ request()->routeIs(
+                        'admin.clients',
+                        'admin.projects'
+                    ) ? 'true' : 'false' }} }"
+                >
+                    {{-- Parent --}}
+                    <button @click="open = !open"
+                        class="hover:cursor-pointer flex items-center justify-between w-full px-3 py-2
+                            text-left font-medium text-black dark:text-yellow-100
+                            hover:bg-gray-100 hover:text-black rounded">
+
+                        <span class="flex items-center">
+                            <i class="fa-solid fa-diagram-project mr-2"></i>
+                            Project Management
+                        </span>
+
+                        {{-- Toggle Icon --}}
+                        <svg x-show="!open" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        <svg x-show="open" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+                        </svg>
+                    </button>
+
+                    {{-- Children --}}
+                    <div x-show="open" x-transition x-cloak>
+                        <flux:navlist.group class="pl-4 mt-1 space-y-1">
+
+                            {{-- Clients --}}
+                            <flux:navlist.item
+                                :href="route('admin.clients')"
+                                :current="request()->routeIs('admin.clients')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-handshake mr-2 text-gray-500"></i>
+                                Clients
+                            </flux:navlist.item>
+
+                            {{-- Projects --}}
+                            <flux:navlist.item
+                                :href="route('admin.projects')"
+                                :current="request()->routeIs('admin.projects')"
+                                wire:navigate
+                            >
+                                <i class="fa-solid fa-folder-open mr-2 text-gray-500"></i>
+                                Projects
+                            </flux:navlist.item>
+
+                        </flux:navlist.group>
+                    </div>
+                </div>
+            </flux:navlist>
+
+
+            <flux:navlist variant="outline">
+                <div
+                    x-data="{ open: {{ request()->routeIs(
                         'admin.holidays*',
                         'admin.weekly-holidays',
                         'admin.leave-types',
